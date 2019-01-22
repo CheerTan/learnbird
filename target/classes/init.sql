@@ -1,0 +1,8 @@
+CREATE TABLE Student (
+    SNO VARCHAR2(3 BYTE) NOT NULL ,
+    SNAME VARCHAR2(9 BYTE) NOT NULL ,
+    SSEX CHAR(2 BYTE) NOT NULL 
+);
+INSERT INTO Student VALUES ('001', 'KangKang', 'M ');
+INSERT INTO Student VALUES ('002', 'Mike', 'M ');
+INSERT INTO Student VALUES ('003', 'Jane', 'F ');
