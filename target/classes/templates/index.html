@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>首页</title>
+    <meta charset="UTF-8"></meta>
+    <script th:src="@{/js/jquery-1.11.1.min.js}"></script>
+    <title>首页</title>
 </head>
 <body>
-	<p>你好！[[${user.userName}]]</p>
-	<a th:href="@{/logout}">注销</a>
+<p>你好！[[${user.userName}]]</p>
+<h3>Permission Test</h3>
+<div>
+    <a th:href="@{/user/list}">UserList</a>
+    <a th:href="@{/user/add}">Add</a>
+    <a th:href="@{/user/delete}">Delete</a>
+</div>
+<a th:href="@{/logout}">注销</a>
 </body>
 </html>

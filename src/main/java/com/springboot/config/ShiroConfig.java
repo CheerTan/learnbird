@@ -1,12 +1,20 @@
 package com.springboot.config;
 
 import com.springboot.shiro.ShiroRealm;
+import org.apache.shiro.codec.Base64;
+import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.context.annotation.DependsOn;
+
 import java.util.LinkedHashMap;
 
 
@@ -35,11 +43,26 @@ public class ShiroConfig {
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}
+	public SimpleCookie rememberMeCookie(){
+		//设置cookie名称，对应login.html页面的<input type="checkbox" name="rememberme">
+		SimpleCookie cookie=new SimpleCookie("rememberme");
+		//set expired time, measure time by seconds
+		cookie.setMaxAge(86400);
+		return cookie;
+	}
+	public RememberMeManager rememberMeManager(){
+		CookieRememberMeManager cookieRememberMeManager=new CookieRememberMeManager();
+		cookieRememberMeManager.setCookie(rememberMeCookie());
+//		cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
+		cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
+		return cookieRememberMeManager;
+	}
 	@Bean
 	public SecurityManager securityManager(){
 		//Configure SecurityManager, and inject it into shiroRealm
 		DefaultWebSecurityManager securityManager=new DefaultWebSecurityManager();
 		securityManager.setRealm(shiroRealm());
+		securityManager.setRememberMeManager(rememberMeManager());
 		return securityManager;
 	}
 	@Bean(name="lifecycleBeanPostProcessor")
@@ -51,5 +74,19 @@ public class ShiroConfig {
 	public ShiroRealm shiroRealm(){
 		ShiroRealm shiroRealm =new ShiroRealm();
 		return shiroRealm;
+	}
+	@Bean
+	@DependsOn({"lifecycleBeanPostProcessor"})
+	public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
+		DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+		advisorAutoProxyCreator.setProxyTargetClass(true);
+		return advisorAutoProxyCreator;
+	}
+
+	@Bean
+	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+		return authorizationAttributeSourceAdvisor;
 	}
 }
