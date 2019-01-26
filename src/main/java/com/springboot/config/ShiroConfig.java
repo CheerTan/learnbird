@@ -1,5 +1,6 @@
 package com.springboot.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.springboot.shiro.ShiroRealm;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.RememberMeManager;
@@ -100,5 +101,9 @@ public class ShiroConfig {
 		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
 		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
 		return authorizationAttributeSourceAdvisor;
+	}
+	@Bean
+	public ShiroDialect shiroDialect(){
+		return new ShiroDialect();
 	}
 }
