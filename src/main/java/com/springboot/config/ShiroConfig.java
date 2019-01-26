@@ -125,6 +125,8 @@ public class ShiroConfig {
 		DefaultWebSessionManager sessionManager=new DefaultWebSessionManager();
 		Collection<SessionListener> listeners=new ArrayList<SessionListener>();
 		listeners.add(new ShiroSessionListener());
+		sessionManager.setSessionListeners(listeners);
+		sessionManager.setSessionDAO(sessionDAO());
 		return  sessionManager;
 	}
 }
