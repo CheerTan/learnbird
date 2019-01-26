@@ -1,5 +1,5 @@
 Update log:<br>
-2019-1-25:Almost finished permission control,but it still can't work well.
+2019-1-25:Almost finished permission control,but it still can't work well.<br>   
 2019-1-26：Using Thymeleaf Tag to control permission web, and don't forget add this in pom.xml
 ```
     <properties>
