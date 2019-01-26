@@ -6,7 +6,7 @@
     <title>首页</title>
 </head>
 <body>
-<p>你好！[[${user.userName}]]</p>
+<p >你好！ th:text="${user.userName}"</p>
 <h3>Permission Test</h3>
 <div>
     <a th:href="@{/user/list}">UserList</a>
@@ -14,5 +14,6 @@
     <a th:href="@{/user/delete}">Delete</a>
 </div>
 <a th:href="@{/logout}">注销</a>
+<p th:text="${user.userName}"></p>
 </body>
 </html>

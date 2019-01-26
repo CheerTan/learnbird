@@ -9,6 +9,8 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,12 +59,22 @@ public class ShiroConfig {
 		cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
 		return cookieRememberMeManager;
 	}
+	public RedisManager redisManager(){
+		RedisManager redisManager=new RedisManager();
+		return redisManager;
+	}
+	public RedisCacheManager redisCacheManager(){
+		RedisCacheManager redisCacheManager=new RedisCacheManager();
+		redisCacheManager.setRedisManager(redisManager());
+		return redisCacheManager;
+	}
 	@Bean
 	public SecurityManager securityManager(){
 		//Configure SecurityManager, and inject it into shiroRealm
 		DefaultWebSecurityManager securityManager=new DefaultWebSecurityManager();
 		securityManager.setRealm(shiroRealm());
 		securityManager.setRememberMeManager(rememberMeManager());
+		securityManager.setCacheManager(redisCacheManager());
 		return securityManager;
 	}
 	@Bean(name="lifecycleBeanPostProcessor")

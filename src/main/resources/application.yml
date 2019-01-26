@@ -60,6 +60,17 @@ spring:
       filter: 
         stat: 
           log-slow-sql: true
+  thymeleaf:
+    cache: false
+  redis:
+    host: locahost
+    port: 6379
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+    timeout: 0
 
 mybatis:
   # type-aliases扫描路径
